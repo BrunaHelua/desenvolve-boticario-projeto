@@ -1,0 +1,11 @@
+attrs==22.2.0
+coverage==7.2.0
+iniconfig==2.0.0
+packaging==23.0
+pluggy==1.0.0
+py==1.11.0
+pytest==7.1.2
+pytest-cov==3.0.0
+style==1.1.0
+tomli==2.0.1
+update==0.0.1
