@@ -1,0 +1,54 @@
+$nameExpre = "Nome", {$_.Name} antes era "Name" -não funciona
+
+$lengthExpre = "Tamanho", {"{0:N2}KB" -f ($$_.Length / 1KB)}
+NÃO FUNCIONA - NÃO CONSEGUE INTERPRETAR ARRAY DE ARRY - PRECISA USAR HASHTABLE
+================================================================================
+================================================================================
+================================================================================
+
+$nameExpre = @{}
+$nameExpre.Add("Label", "Nome")
+$nameExpre.Add("Expression", {$_.Name})
+
+
+$lengthExpre = @{}
+$lengthExpre.Add("Label", "Tamanho")
+$lengthExpre.Add("Expression", {"{0:N2}KB" -f ($$_.Length / 1KB)})
+
+================================================================================
+================================================================================
+================================================================================
+
+$nameExpre = @{
+	Label ="Nome";
+	Expression = {$_.Name}
+}
+
+$lengthExpre = @{
+	Label ="Tamanho";
+	Expression = {"{0:N2}KB" -f ($$_.Length / 1KB)}
+}
+
+
+$params = $nameExpre, $lengthExpre
+
+gci -Recurse -File |
+? Name -like "*_migrando_*" |
+select $params
+
+================================================================================
+================================================================================
+================================================================================
+
+$params = @($nameExpre, $lengthExpre)
+
+gci -Recurse -File ` ou |
+| where-object Name -like "*_migrando_*" ` |
+|select-object `
+$nameExpre, $lenghtExpre
+pode user alias 
+
+where-object = ?
+select-object = select
+
+@{}

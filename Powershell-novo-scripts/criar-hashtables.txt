@@ -1,0 +1,54 @@
+# param() e reservado do shell
+# ao chamar script, chama a variavel
+$param($tipoExportacao)
+
+$ErrorActionPreference = "Stop"
+
+# Aqui a gente cria um hashtable para a coluna de nome
+$nameExpr = @{
+    Label = "Nome";
+    Expression = { $_.Name }
+}
+
+# Também montamos um hashtable. Só que esse daqui é pro Tamanho
+
+<#comentario de varias linhas
+#>
+$lengthExpr = @{
+    Label = "Tamanho";
+    Expression = { "{0:N2}KB" -f ($_.Length / 1KB) }
+}
+
+Basta usar uma vírgula e nós temos um array
+$params = $nameExpr, $lengthExpr
+
+$resultado =
+	gci -Recurse -File |
+    		? Name -like "*_migrando_*" |
+    		select $params
+
+if($tipoExportacao -ep "HTML"){
+	# embutir estilo na pagina relatorio html
+	$estilos = Get-Content path\scripts\styles.css
+
+	#styleTag= "<style>" + $estilos + "</style>"
+
+	#interpolacao de strings no powershell
+	$styleTag= "<style> $estilos </style>"
+	$tituloPagina = "Relatorio de Scripts em Migracao"
+	$tituloBody = "<h1> $tituloPagina </h1>"
+
+
+	$resultado | 
+		ConvertTo-Html -Head $styleTag -Title $tituloPagina -Body $tituloBody| 
+		Out-File c:\tempBru\relatorio.html
+
+} elseif ($tipoExportacao - eq "JSON"{
+	$resultado | ConvertTo-JSON |
+	Out-File c:\path\relatorio.json
+}
+# convertto-csv coloca infos extras por padrao no cabecalho da tabela
+elseif ($tipoExportacao - eq "CSV"){
+	$resultado | ConvertTo-CSV -NoTypeInformation |
+	Out-File c:\path\relatorio.csv	
+}
