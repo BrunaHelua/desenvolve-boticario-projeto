@@ -1,1 +1,12 @@
 bruna-teste/.git
+### Terraform ###
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+*.pem
+*.ppk
+
