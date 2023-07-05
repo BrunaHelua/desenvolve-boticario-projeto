@@ -14,5 +14,12 @@
           - django
           - djangorestframework
     - name: iniciando projeto
-      shell: '. /home/ubuntu/projeto/venv/bin/activate; django-admin startproject setup /home/ubuntu/projeto/'          
+      shell: '. /home/ubuntu/projeto/venv/bin/activate; django-admin startproject setup /home/ubuntu/projeto/'   
+    - name: alterando allowedhosts do settings.py
+      lineinfile:
+        path: /home/ubuntu/projeto/setup/settings.py
+        regexp: 'ALLOWED_HOSTS'
+        line: 'ALLOWED_HOSTS = ["*"]'
+        backrefs: yes
+
       
