@@ -1,6 +1,12 @@
 provider "aws" {
   region  = "us-east-1"
 }
+
+provider "aws" {
+  alias = "us-east-2"
+  region  = "us-east-2"
+}
+
 resource "aws_instance" "dev" {
     ami = "ami-053b0d53c279acc90"
     count = 3
@@ -9,20 +15,44 @@ resource "aws_instance" "dev" {
     tags = {
         Name = "dev${count.index}"
     }   
-    vpc_security_group_ids = ["sg-0945ba67497580eb4"]
+    vpc_security_group_ids = ["${aws_security_group.acesso_ssh.id}"]
 }
-resource "aws_security_group" "acesso_ssh" {
-  name        = "acesso_ssh"
-  description = "Allow SSH inbound traffic"
 
-  ingress {
-    description      = "SSH from VPC"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["177.9.226.219/32"]
-  }
+resource "aws_instance" "dev4" {
+    ami = "ami-053b0d53c279acc90"
+    instance_type = "t2.micro"
+    key_name = "terraform-aws"
+    tags = {
+        Name = "dev4"
+    }   
+    vpc_security_group_ids = ["${aws_security_group.acesso_ssh.id}"]
+    depends_on = [ aws_s3_bucket.dev4 ]
+}
+
+resource "aws_instance" "dev5" {
+    ami = "ami-053b0d53c279acc90"
+    instance_type = "t2.micro"
+    key_name = "terraform-aws"
+    tags = {
+        Name = "dev5"
+    }   
+    vpc_security_group_ids = ["${aws_security_group.acesso_ssh.id}"]
+}
+
+resource "aws_instance" "dev6" {
+    ami = ""
+    instance_type = "t2.micro"
+    key_name = "terraform-aws"
+    tags = {
+        Name = "dev6"
+    }   
+    vpc_security_group_ids = ["${aws_security_group.acesso_ssh.id}"]
+}
+
+resource "aws_s3_bucket" "dev4" {
+  bucket = "brunahelua-dev4"
+
   tags = {
-    Name = "acesso_ssh"
+    Name        = "brunahelua-dev4"
   }
 }
