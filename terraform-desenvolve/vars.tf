@@ -9,6 +9,9 @@ variable "amis" {
 
 variable "cdirs_acesso_remoto" {
   type = "list"
-
   default = ["177.9.226.219/32"]
+}
+
+variable "key_name" {
+    default = "terraform-aws"
 }
