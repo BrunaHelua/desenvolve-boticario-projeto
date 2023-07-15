@@ -27,6 +27,7 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: ${{ matrix.go_version }}
+        
       
     - name: Build-DB
       run: docker-compose build
@@ -52,3 +53,5 @@ jobs:
   docker:
     needs: build
     uses: ./.github/workflows/Docker.yml
+    secrets: inherit
+    
